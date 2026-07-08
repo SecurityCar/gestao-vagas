@@ -27,7 +27,7 @@ public class CandidateController {
     private final CreateCandidateUseCase createCandidateUseCase;
     private final ProfileCandidateUseCase profileCandidateUseCase;
 
-    CandidateController(CreateCandidateUseCase createCandidateUseCase){
+    CandidateController(CreateCandidateUseCase createCandidateUseCase, ProfileCandidateUseCase profileCandidateUseCase){
         this.createCandidateUseCase = createCandidateUseCase;
         this.profileCandidateUseCase = profileCandidateUseCase;
     }
