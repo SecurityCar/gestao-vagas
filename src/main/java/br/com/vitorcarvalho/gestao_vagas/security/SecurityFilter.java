@@ -26,7 +26,7 @@ public class SecurityFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         String header = request.getHeader("Authorization");
-        SecurityContextHolder.getContext().setAuthentication(null);
+        //SecurityContextHolder.getContext().setAuthentication(null);
 
         if(request.getRequestURI().startsWith("/company")){
             if(header != null){

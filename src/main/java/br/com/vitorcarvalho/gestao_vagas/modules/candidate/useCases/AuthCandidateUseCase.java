@@ -46,7 +46,7 @@ public class AuthCandidateUseCase {
         Algorithm algorithm = Algorithm.HMAC256(secretKey);
         var token = JWT.create().withIssuer("gestao_vagas")
         .withSubject(candidate.getId().toString())
-        .withClaim("roles", Arrays.asList("candidate"))
+        .withClaim("roles", Arrays.asList("CANDIDATE"))
         .withExpiresAt(Instant.now().plus(Duration.ofMinutes(10)))
         .sign(algorithm);
 
