@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.vitorcarvalho.gestao_vagas.exceptions.UserFoundException;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.CandidateRepository;
-import br.com.vitorcarvalho.gestao_vagas.modules.candidate.controllers.CandidateEntity;
+import br.com.vitorcarvalho.gestao_vagas.modules.company.entities.CandidateEntity;
 
 @Service
 public class CreateCandidateUseCase {

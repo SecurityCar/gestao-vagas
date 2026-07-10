@@ -6,10 +6,14 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.vitorcarvalho.gestao_vagas.exceptions.UserFoundException;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.CandidateRepository;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
+import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
+import br.com.vitorcarvalho.gestao_vagas.modules.company.entities.CandidateEntity;
+import br.com.vitorcarvalho.gestao_vagas.modules.company.entities.JobEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +31,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CandidateController { 
     private final CreateCandidateUseCase createCandidateUseCase;
     private final ProfileCandidateUseCase profileCandidateUseCase;
+    private final ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
 
-    CandidateController(CreateCandidateUseCase createCandidateUseCase, ProfileCandidateUseCase profileCandidateUseCase){
+    CandidateController(CreateCandidateUseCase createCandidateUseCase, ProfileCandidateUseCase profileCandidateUseCase,
+        ListAllJobsByFilterUseCase listAllJobsByFilterUseCase
+    ){
         this.createCandidateUseCase = createCandidateUseCase;
         this.profileCandidateUseCase = profileCandidateUseCase;
+        this.listAllJobsByFilterUseCase = listAllJobsByFilterUseCase;
     }
 
     @PostMapping("/")
@@ -54,6 +62,12 @@ public class CandidateController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
         
+    }
+    
+    @GetMapping("/job")
+    @PreAuthorize("hasRole('CANDIDATE')")
+    public List<JobEntity> findJobByFilter(@RequestParam String filter) {
+        return this.listAllJobsByFilterUseCase.execute(filter);
     }
     
 }
