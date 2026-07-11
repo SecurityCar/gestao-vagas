@@ -21,7 +21,7 @@ public class ApplyJobCandidateUseCase {
 
     public void execute(UUID idCandidate, UUID idJob){
         this.candidateRepository.findById(idCandidate).orElseThrow(
-            () -> {new UserNotFoundException();}
+            () -> new UserNotFoundException()
         );  
 
         this.jobRepository.findById(idJob).orElseThrow(
