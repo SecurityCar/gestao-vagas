@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.dto.ProfileCandidateResponseDTO;
+import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.ApplyJobCandidateUseCase;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.CreateCandidateUseCase;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.ListAllJobsByFilterUseCase;
 import br.com.vitorcarvalho.gestao_vagas.modules.candidate.useCases.ProfileCandidateUseCase;
@@ -38,13 +39,15 @@ public class CandidateController {
     private final CreateCandidateUseCase createCandidateUseCase;
     private final ProfileCandidateUseCase profileCandidateUseCase;
     private final ListAllJobsByFilterUseCase listAllJobsByFilterUseCase;
+    private final ApplyJobCandidateUseCase applyJobCandidateUseCase;
 
     CandidateController(CreateCandidateUseCase createCandidateUseCase, ProfileCandidateUseCase profileCandidateUseCase,
-        ListAllJobsByFilterUseCase listAllJobsByFilterUseCase
+        ListAllJobsByFilterUseCase listAllJobsByFilterUseCase, ApplyJobCandidateUseCase applyJobCandidateUseCase
     ){
         this.createCandidateUseCase = createCandidateUseCase;
         this.profileCandidateUseCase = profileCandidateUseCase;
         this.listAllJobsByFilterUseCase = listAllJobsByFilterUseCase;
+        this.applyJobCandidateUseCase = applyJobCandidateUseCase;
     }
 
     @PostMapping("/")
@@ -96,4 +99,18 @@ public class CandidateController {
         return this.listAllJobsByFilterUseCase.execute(filter);
     }
     
+    @PostMapping("/job/apply") 
+    @PreAuthorize("hasRole('CANDIDATE')")
+    @SecurityRequirement(name = "jwt_auth")
+    @Operation(summary = "Inscrição do candidato a uma vaga", description = "Essa função é responsável por inscrever um candidato a uma vaga")
+    public ResponseEntity<Object> applyJob(HttpServletRequest request, @RequestBody UUID jobId){
+        var candidateId = request.getAttribute("candidate_id");
+
+        try {
+            var result = this.applyJobCandidateUseCase.execute(UUID.fromString(candidateId.toString()), jobId);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
