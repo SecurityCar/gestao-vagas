@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final SecurityFilter securityFilter;
+    private final SecurityCompanyFilter securityCompanyFilter;
     private final SecurityCandidateFilter securityCandidateFilter;
 
     private static final String[] SWAGGER_LIST = {
@@ -22,8 +22,8 @@ public class SecurityConfig {
         "/v3/api-docs/**"
     };
 
-    SecurityConfig(SecurityFilter securityFilter, SecurityCandidateFilter securityCandidateFilter){
-        this.securityFilter = securityFilter;
+    SecurityConfig(SecurityCompanyFilter securityCompanyFilter, SecurityCandidateFilter securityCandidateFilter){
+        this.securityCompanyFilter = securityCompanyFilter;
         this.securityCandidateFilter = securityCandidateFilter;
     }
     
@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .requestMatchers(SWAGGER_LIST).permitAll();
             auth.anyRequest().authenticated();
         })
-        .addFilterBefore(securityFilter, BasicAuthenticationFilter.class)
+        .addFilterBefore(securityCompanyFilter, BasicAuthenticationFilter.class)
         .addFilterBefore(securityCandidateFilter, BasicAuthenticationFilter.class);
 
         return http.build();
