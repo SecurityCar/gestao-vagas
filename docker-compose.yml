@@ -3,7 +3,8 @@ networks:
     driver: bridge
 
 volumes:
-  prometheus_data: {}
+  prometheus_data: 
+  grafana_data:
 
 services:
   postgres:
@@ -25,3 +26,11 @@ services:
       - gestaovagas-network
     ports:
       - 9090:9090
+
+  grafana: 
+    container_name: grafana
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    networks:
+      - gestaovagas-network
