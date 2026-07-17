@@ -47,7 +47,6 @@ Thumbs.db
 #Arquivos Sensíveis
 application-dev.yml
 application-prod.yml
-*.properties
 !.gitignore
 
 #Pasta de compilação
